@@ -131,10 +131,6 @@ class TestProductRoutes(TestCase):
         self.assertEqual(new_product["available"], test_product.available)
         self.assertEqual(new_product["category"], test_product.category.name)
 
-        #
-        # Uncomment this code once READ is implemented
-        #
-
         # # Check that the location header was correct
         # response = self.client.get(location)
         # self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -164,6 +160,9 @@ class TestProductRoutes(TestCase):
         response = self.client.post(BASE_URL, data={}, content_type="plain/text")
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
+    # ----------------------------------------------------------
+    # TEST READ
+    # ----------------------------------------------------------
     def test_get_product(self):
         """It should Get a single Product"""
         # get the id of a product
@@ -180,6 +179,9 @@ class TestProductRoutes(TestCase):
         data = response.get_json()
         self.assertIn("was not found", data["message"])
 
+    # ----------------------------------------------------------
+    # TEST UPDATE
+    # ----------------------------------------------------------
     def test_update_product(self):
         """It should Update an existing Product"""
         # create a product to update
@@ -195,6 +197,9 @@ class TestProductRoutes(TestCase):
         updated_product = response.get_json()
         self.assertEqual(updated_product["description"], "unknown")
 
+    # ----------------------------------------------------------
+    # TEST LIST ALL
+    # ----------------------------------------------------------
     def test_get_product_list(self):
         """It should Get a list of Products"""
         self._create_products(5)
@@ -203,6 +208,9 @@ class TestProductRoutes(TestCase):
         data = response.get_json()
         self.assertEqual(len(data), 5)
 
+    # ----------------------------------------------------------
+    # TEST LIST BY NAME
+    # ----------------------------------------------------------
     def test_query_by_name(self):
         """It should Query Products by name"""
         products = self._create_products(5)
@@ -218,6 +226,9 @@ class TestProductRoutes(TestCase):
         for product in data:
             self.assertEqual(product["name"], test_name)
 
+    # ----------------------------------------------------------
+    # TEST LIST BY CATEGORY
+    # ----------------------------------------------------------
     def test_query_by_category(self):
         """It should Query Products by category"""
         products = self._create_products(10)
@@ -235,6 +246,9 @@ class TestProductRoutes(TestCase):
         for product in data:
             self.assertEqual(product["category"], category.name)
 
+    # ----------------------------------------------------------
+    # TEST LIST BY AVAILABILITY
+    # ----------------------------------------------------------
     def test_query_by_availability(self):
         """It should Query Products by availability"""
         products = self._create_products(10)
@@ -251,6 +265,9 @@ class TestProductRoutes(TestCase):
         for product in data:
             self.assertEqual(product["available"], True)
 
+    # ----------------------------------------------------------
+    # TEST DELETE
+    # ----------------------------------------------------------
     def test_delete_product(self):
         """It should Delete a Product"""
         products = self._create_products(5)
